@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "sdmstages",
+  "version": "${version}",
+  "name": "SDMStages",
+  "description": "",
+  "authors": [
+    ""
+  ],
+  "contact": {
+    "homepage": ""
+  },
+  "license": "MIT",
+  "icon": "assets/sdmstages/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.behindthescenery.sdmstages.fabric.SdmStagesFabric"
+    ]
+  },
+  "mixins": [
+    "sdmstages.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.17.3",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "architectury": ">=13.0.8"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

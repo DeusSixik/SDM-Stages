@@ -22,3 +22,14 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+/.gradle
+/.idea.
+/common/build
+/common/.gradle
+/fabric/build
+/fabric/.gradle
+/fabric/run
+/neoforge/build
+/neoforge/.gradle
+/neoforge/run
+/.idea
