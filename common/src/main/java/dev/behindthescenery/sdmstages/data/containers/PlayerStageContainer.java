@@ -33,7 +33,7 @@ public class PlayerStageContainer extends SimpleData<UUID, Stage> implements Sta
     }
 
     public void addStage(UUID player, String stage) {
-        Stage data = getOrCreate(player, (s) -> new Stage(this));
+        Stage data = getOrCreate(player, (s) -> new Stage(this).setOwner(s));
 
         boolean isBreak = false;
 
@@ -53,7 +53,7 @@ public class PlayerStageContainer extends SimpleData<UUID, Stage> implements Sta
     }
 
     public void addStages(UUID player, String... stage) {
-        Stage data = getOrCreate(player, (s) -> new Stage(this));
+        Stage data = getOrCreate(player, (s) -> new Stage(this).setOwner(s));
 
         boolean isBreak = false;
 
@@ -77,7 +77,7 @@ public class PlayerStageContainer extends SimpleData<UUID, Stage> implements Sta
     }
 
     public void removeStage(UUID player, String stage) {
-        Stage data = getOrCreate(player, (s) -> new Stage(this));
+        Stage data = getOrCreate(player, (s) -> new Stage(this).setOwner(s));
 
         boolean isBreak = false;
 
@@ -97,7 +97,7 @@ public class PlayerStageContainer extends SimpleData<UUID, Stage> implements Sta
     }
 
     public boolean hasStage(UUID player, String stage) {
-        Stage data = getOrCreate(player, (s) -> new Stage(this));
+        Stage data = getOrCreate(player, (s) -> new Stage(this).setOwner(s));
         return data.contains(stage);
     }
 
@@ -106,12 +106,12 @@ public class PlayerStageContainer extends SimpleData<UUID, Stage> implements Sta
     }
 
     public Collection<String> getStages(UUID player) {
-        Stage data = getOrCreate(player, (s) -> new Stage(this));
+        Stage data = getOrCreate(player, (s) -> new Stage(this).setOwner(s));
         return new ArrayList<>(data.stage_list);
     }
 
     public void onPlayerJoin(ServerPlayer player) {
-        Stage data = getOrCreate(player.getGameProfile().getId(), (s) -> new Stage(this));
+        Stage data = getOrCreate(player.getGameProfile().getId(), (s) -> new Stage(this).setOwner(s));
 
         for (AbstractStageComponent component : components) {
             component.onPlayerJoin(player, data);
@@ -120,12 +120,12 @@ public class PlayerStageContainer extends SimpleData<UUID, Stage> implements Sta
     }
 
     @Override
-    public Stage createElement(@Nullable MinecraftServer server, Tag valueNbt) {
+    public Stage createElement(@Nullable MinecraftServer server, Tag valueNbt, UUID key) {
         if(!(valueNbt instanceof CompoundTag nbt)) {
             return new Stage(this);
         }
 
-        return Stage.CODEC.decode(NbtOps.INSTANCE, nbt).getOrThrow().getFirst().setStageData(this);
+        return Stage.CODEC.decode(NbtOps.INSTANCE, nbt).getOrThrow().getFirst().setStageData(this).setOwner(key);
     }
 
     @Override
@@ -199,7 +199,7 @@ public class PlayerStageContainer extends SimpleData<UUID, Stage> implements Sta
         } else
             throw new IllegalArgumentException();
 
-        return getOrCreate(currentUUID, (s) -> new Stage(this));
+        return getOrCreate(currentUUID, (s) -> new Stage(this).setOwner(currentUUID));
     }
 
     @Override

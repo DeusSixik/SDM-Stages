@@ -3,11 +3,13 @@ package dev.behindthescenery.sdmstages.data.containers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.behindthescenery.sdmstages.data.StageContainer;
+import dev.behindthescenery.sdmstages.events.StagesEvents;
 import dev.behindthescenery.sdmstages.serializers.CodecSupport;
 import dev.behindthescenery.sdmstages.serializers.StreamCodecSupport;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,7 @@ public class Stage implements CodecSupport<Stage>, StreamCodecSupport<Stage> {
 
     protected final List<String> stage_list;
     protected StageContainer stage_data;
+    protected @Nullable Object owner = null;
 
     public Stage() {
         this(new ArrayList<>(), null);
@@ -66,16 +69,26 @@ public class Stage implements CodecSupport<Stage>, StreamCodecSupport<Stage> {
         return this;
     }
 
+    public Stage setOwner(@Nullable Object owner) {
+        this.owner = owner;
+        return this;
+    }
+
     public List<String> getStages() {
         return stage_list.stream().toList();
     }
 
     public void addStage(String stage) {
+        if(contains(stage)) return;
+
         stage_list.add(stage);
+        StagesEvents.ON_STAGE_ADD.invoker().add(stage, this, stage_data, owner);
     }
 
     public void addStages(String... stages) {
-        this.stage_list.addAll(List.of(stages));
+        for (String stage : stages) {
+            addStage(stage);
+        }
     }
 
     public boolean contains(String stage) {
@@ -83,7 +96,14 @@ public class Stage implements CodecSupport<Stage>, StreamCodecSupport<Stage> {
     }
 
     public boolean remove(String stage) {
-        return this.stage_list.remove(stage);
+        if(!contains(stage)) return false;
+
+        if(this.stage_list.remove(stage)) {
+            StagesEvents.ON_STAGE_REMOVE.invoker().remove(stage, this, stage_data, owner);
+            return true;
+        }
+
+        return false;
     }
 
     @Override

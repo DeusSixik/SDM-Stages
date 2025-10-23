@@ -52,7 +52,7 @@ public abstract class SimpleData<Key, Value extends NbtSupport<? extends Tag>> i
         return map_data.size();
     }
 
-    public abstract Value createElement(@Nullable final MinecraftServer server, final Tag valueNbt);
+    public abstract Value createElement(@Nullable final MinecraftServer server, final Tag valueNbt, Key key);
 
     public abstract Key createElementKey(@Nullable final MinecraftServer server, final String fileName);
 
@@ -190,7 +190,7 @@ public abstract class SimpleData<Key, Value extends NbtSupport<? extends Tag>> i
                 continue;
             }
 
-            final Value value = createElement(server, valueNbt);
+            final Value value = createElement(server, valueNbt, key);
             if (value != null) {
                 map_data.put(key, value);
             } else {
@@ -252,7 +252,7 @@ public abstract class SimpleData<Key, Value extends NbtSupport<? extends Tag>> i
                         return;
                     }
 
-                    final Value value = createElement(server, valueNbt);
+                    final Value value = createElement(server, valueNbt, key);
                     if (value != null) {
                         map_data.put(key, value);
                     } else {
