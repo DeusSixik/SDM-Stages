@@ -10,6 +10,7 @@ public interface StagesEvents {
 
     Event<StageAdd> ON_STAGE_ADD = EventFactory.createLoop(new StageAdd[0]);
     Event<StageRemove> ON_STAGE_REMOVE = EventFactory.createLoop(new StageRemove[0]);
+    Event<SyncStages> ON_STAGE_SYNC = EventFactory.createLoop(new SyncStages[0]);
 
     interface StageAdd {
         void add(String stage, Stage stageData, StageContainer stageContainer, @Nullable Object owner);
@@ -17,5 +18,9 @@ public interface StagesEvents {
 
     interface StageRemove {
         void remove(String stage, Stage stageData, StageContainer stageContainer, @Nullable Object owner);
+    }
+
+    interface SyncStages {
+        void sync(Stage stageData, StageContainer stageContainer);
     }
 }

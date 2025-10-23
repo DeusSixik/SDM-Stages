@@ -69,6 +69,10 @@ public class Stage implements CodecSupport<Stage>, StreamCodecSupport<Stage> {
         return this;
     }
 
+    public StageContainer getStageData() {
+        return stage_data;
+    }
+
     public Stage setOwner(@Nullable Object owner) {
         this.owner = owner;
         return this;

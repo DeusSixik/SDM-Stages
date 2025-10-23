@@ -4,7 +4,6 @@ import com.mojang.logging.LogUtils;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.PlayerEvent;
-import dev.architectury.event.events.common.TickEvent;
 import dev.behindthescenery.sdmstages.config.SdmStagesConfig;
 import dev.behindthescenery.sdmstages.network.BaseNetworkHandler;
 import dev.behindthescenery.sdmstages.network.SdmStagesNetwork;

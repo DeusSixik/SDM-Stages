@@ -4,6 +4,7 @@ import dev.architectury.networking.NetworkManager;
 import dev.behindthescenery.sdmstages.SdmStages;
 import dev.behindthescenery.sdmstages.StageApi;
 import dev.behindthescenery.sdmstages.data.containers.Stage;
+import dev.behindthescenery.sdmstages.events.StagesEvents;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -22,7 +23,11 @@ public record SendStagesS2C(Stage stage) implements CustomPacketPayload {
     }
 
     public static void handle(SendStagesS2C message, NetworkManager.PacketContext context) {
-        context.queue(() -> StageApi.getClientStage().copyFrom(message.stage()));
+        context.queue(() -> {
+            final Stage client = StageApi.getClientStage();
+            client.copyFrom(message.stage());
+            StagesEvents.ON_STAGE_SYNC.invoker().sync(client, client.getStageData());
+        });
     }
 
 }
