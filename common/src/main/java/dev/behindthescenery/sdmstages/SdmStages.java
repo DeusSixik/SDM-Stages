@@ -21,7 +21,6 @@ public final class SdmStages {
         SdmStagesNetwork.init(handler);
 
         CommandRegistrationEvent.EVENT.register(SdmStagesCommand::registerCommands);
-
         LifecycleEvent.SERVER_BEFORE_START.register(StageApi::reloadServerStage);
         LifecycleEvent.SERVER_LEVEL_SAVE.register(s -> {
             if(s.dimension() == ServerLevel.OVERWORLD) {

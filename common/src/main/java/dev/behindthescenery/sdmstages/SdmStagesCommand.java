@@ -49,12 +49,16 @@ public class SdmStagesCommand {
 
         for (GameProfile profile : profiles) {
 
-            final ServerPlayer player = players.getPlayer(profile.getId());
-            if (player != null && StageApi.modifyStageAndSync(player, s -> s.addStage(stage))) {
-                ctx.getSource().sendSuccess(() ->
-                        Component.literal("Added stage '" + stage + "' to " + player.getName().getString()), true);
-            } else {
-                ctx.getSource().sendFailure(Component.literal("Player not found: " + profile.getName()));
+            for (ServerPlayer player : players.getPlayers()) {
+                if(player.getGameProfile().getId() == profile.getId()) {
+                    if (StageApi.modifyStageAndSync(player, s -> s.addStage(stage))) {
+                        ctx.getSource().sendSuccess(() ->
+                                Component.literal("Added stage '" + stage + "' to " + player.getName().getString()), true);
+                    } else {
+                        ctx.getSource().sendFailure(Component.literal("Player not found: " + profile.getName()));
+                    }
+                    break;
+                }
             }
         }
         return 1;

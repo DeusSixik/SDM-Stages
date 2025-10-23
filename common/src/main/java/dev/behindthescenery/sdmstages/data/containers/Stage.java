@@ -57,7 +57,7 @@ public class Stage implements CodecSupport<Stage>, StreamCodecSupport<Stage> {
     }
 
     public Stage(List<String> stages, StageContainer stage_data) {
-        this.stage_list = stages;
+        this.stage_list = new ArrayList<>(stages);
         this.stage_data = stage_data;
     }
 
